@@ -4,11 +4,9 @@ import lombok.Data;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-@Document(collection = "employee")
+@Document(collection = "admin")
 @Data
-public class Employee extends User {
-	@Field("employee_id")
-	private String employeeId;
-	@Field("department")
-	private String department;
+public class Manager extends User {
+	@Field(name = "manager_id")
+	private String managerId;
 }
