@@ -1,9 +1,12 @@
 [{
-  "_id": "61ae2addac64b2da7b03e807",
+  "_id": {
+    "$oid": "61af1ceb4cc4c3fbc91866b5"
+  },
   "username": "manager",
   "password": "$2a$10$t8LRphlCvzDx.GLsHs.b5uHo1pj8hjjJTJrC1AZbrK4egDAf3ydim",
   "name": "Manager",
   "birthday": "2021-12-06",
   "address": "HN",
-  "role": "ROLE_MANAGER"
+  "role": "ROLE_MANAGER",
+  "user_id": "USER01"
 }]

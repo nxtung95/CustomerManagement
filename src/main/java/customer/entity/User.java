@@ -11,7 +11,7 @@ import java.util.Date;
 @Data
 public class User {
 	@Id
-	private Long id;
+	private String id;
 
 	@Field(value = "username")
 	private String username;
@@ -22,7 +22,7 @@ public class User {
 	private String name;
 
 	@Field(value = "birthday")
-	private Date birthday;
+	private String birthday;
 	@Field(value = "address")
 	private String address;
 

@@ -1,7 +1,7 @@
 package customer.service;
 
+import customer.dao.UserDao;
 import customer.entity.User;
-import customer.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +23,11 @@ public class UserDetailServiceImpl implements UserDetailsService {
     private static final Logger log = LoggerFactory.getLogger(UserDetailServiceImpl.class);
 
     @Autowired
-    private UserRepository userRepository;
+    private UserDao userDao;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
+        User user = userDao.findByUsername(username);
         log.info("Login with email " + username);
         if (user == null) {
             throw new UsernameNotFoundException("User not found");

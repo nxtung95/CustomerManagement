@@ -1,7 +1,8 @@
 package customer.config;
 
 
-import customer.service.UserDetailServiceImpl;
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -23,8 +24,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailService;
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+    public void configureGlobal(@Autowired AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailService).passwordEncoder(passwordEncoder());
     }
 
@@ -35,9 +35,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                    .antMatchers("/app/admin/*").hasRole("ADMIN")
+                    .antMatchers("/resources/**").permitAll()
+                    .antMatchers("/app/manager/*").hasRole("MANAGER")
                     .antMatchers("/app/employee/*").hasRole("EMPLOYEE")
-                .and()
+                    .and()
                 .formLogin()
                     .loginPage("/app/login")
                     .usernameParameter("username")
@@ -45,23 +46,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .loginProcessingUrl("/app/login")
                     .successHandler(myAuthenticationSuccessHandler())
                     .failureUrl("/app/login?error=true")
-
-                .and()
+                    .and()
                 .logout()
                     .logoutUrl("/app/logout")
                     .logoutSuccessUrl("/app/login")
-                    .logoutSuccessUrl("/app/logout")
                     .invalidateHttpSession(true)
                     .deleteCookies("JSESSIONID")
+                    .and()
+                .exceptionHandling().accessDeniedPage("/app/login403");
 
-                .and()
-                .exceptionHandling().accessDeniedPage("/app/login403")
-
-                .and()
-                .rememberMe()
-                    .key("uniqueAndSecret")
-                    .authenticationSuccessHandler(myAuthenticationSuccessHandler());
-        http.sessionManagement().maximumSessions(1).expiredUrl("/login?expired=true");
+        http.sessionManagement().maximumSessions(1).expiredUrl("/app/login?expired=true");
     }
 
     @Bean

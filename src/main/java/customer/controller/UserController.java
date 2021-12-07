@@ -12,4 +12,9 @@ public class UserController {
 	public String login() {
 		return "login";
 	}
+
+	@RequestMapping(value = "/manager", method = RequestMethod.GET)
+	public String dashboard() {
+		return "manager/dashboard";
+	}
 }
