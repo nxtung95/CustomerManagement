@@ -1,0 +1,9 @@
+[{
+  "_id": "61ae2addac64b2da7b03e807",
+  "username": "manager",
+  "password": "$2a$10$t8LRphlCvzDx.GLsHs.b5uHo1pj8hjjJTJrC1AZbrK4egDAf3ydim",
+  "name": "Manager",
+  "birthday": "2021-12-06",
+  "address": "HN",
+  "role": "ROLE_MANAGER"
+}]
