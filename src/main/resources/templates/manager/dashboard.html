@@ -6,6 +6,8 @@
     <th:block th:insert="~{common/library :: head/link}"></th:block>
     <th:block th:insert="~{common/library :: head/script}"></th:block>
     <link rel="stylesheet" type="text/css" th:href="@{/resources/css/header.css}" href="../../../css/header.css">
+    <script th:src="@{/resources/js/customer.js}" src="../resources/js/customer.js"></script>
+
 </head>
 <body>
 <th:block th:insert="~{/fragments/spinner :: #loader}"></th:block>
@@ -18,13 +20,6 @@
     <div id="content">
         <!-- Header -->
         <nav th:replace="~{/common/header :: nav}"></nav>
-
-        <!-- Content -->
-        <article>
-            <div class="container">
-                <p>Test manager</p>
-            </div>
-        </article>
     </div>
 </div>
 </body>

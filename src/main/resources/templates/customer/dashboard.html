@@ -9,17 +9,8 @@
     <th:block th:insert="~{common/library :: head/link}"></th:block>
     <script th:src="@{/resources/js/customer.js}" src="../resources/js/customer.js"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"></script>
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css">
     <script th:src="@{/resources/js/header.js}" src="../../js/header.js"></script>
     <link rel="stylesheet" type="text/css"  th:href="@{/resources/css/header.css}" href="../../../css/header.css">
-    <link rel="stylesheet" type="text/css"  th:href="@{/resources/css/customer.css}" href="../../../css/customer.css">
-    <link rel="stylesheet" type="text/css" th:href="@{/resources/css/main.css}" href="../css/main.css">
 </head>
 <body>
 <th:block th:insert="~{/fragments/spinner :: #loader}"></th:block>
@@ -35,57 +26,128 @@
             <h2 class="text-center">Quản lý khách hàng</h2>
             <form id="frmSearch" class="form-row d-flex justify-content-around align-items-center align-self-center">
                 <div class="col-md-3 form-group">
-                    <label for="usr">Tên khách hàng:</label>
-                    <input type="text" class="form-control" id="usr">
+                    <label for="usr1">Tên khách hàng:</label>
+                    <input type="text" class="form-control" id="usr1" name="name">
                 </div>
-                <!--Date picker -->
-                <div class='col-md-3'>
-                    <label class="form-label">Ngày sinh :</label>
-                    <div class="form-group">
-                        <div class='input-group date' id='datetimepicker1'>
-                            <input type='text' class="form-control" name="birthday"/>
-                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-                        </div>
-                    </div>
+                <div class="col-md-3 form-group">
+                    <label for="usr2">Người đại diện:</label>
+                    <input type="text" class="form-control" id="usr2" name="representName">
                 </div>
                 <div class="col-md-6">
                     <button type="button" class="btn btn-search" onclick="search()">Tìm kiếm</button>
-                    <button type="button" class="btn btn-search" onclick="search()">Thêm</button>
+                    <button type="button" class="btn btn-search" data-toggle="modal" data-target="#addModal">Thêm</button>
+                    <button type="button" class="btn btn-search" onclick="exportJsonFile()">Xuất file JSON</button>
+                    <button type="button" class="btn btn-search" onclick="exportXMLFile()">Xuất file XML</button>
                 </div>
             </form>
             <div class="table-responsive">
-                <table class="table table-bordered">
+                <table class="table">
                     <thead>
                     <tr>
                         <th>STT</th>
                         <th>Tên công ty</th>
                         <th>Địa chỉ</th>
                         <th>Người đại diện</th>
-                        <th>Sản phẩm đã mua</th>
-                        <th>Thời gian</th>
-                        <th>Tổng tiền</th>
+                        <th>Tổng tiền đã mua</th>
                         <th></th>
                         <th></th>
                     </tr>
                     </thead>
                     <tbody id="customerListTable">
-<!--                    <tr th:each="customer : ${customerList}">-->
-<!--                        <td>Tháng <span th:text="${#dates.format(price.createdAt, 'MM-yyyy')}"></span></td>-->
-<!--                        <td><span th:text="${customer.name}"></span></td>-->
-<!--                        <td><span th:text="${customer.address}"></span></td>-->
-<!--                        <td><span th:text="${customer.getRepresentName()}"></span></td>-->
-<!--                        <td><span th:text="${customer.getInvoiceList()}"></span></td>-->
-<!--                        <td><span th:text="${price.garbagePrice}"></span></td>-->
-<!--                        <td><span th:text="${price.total}"></span></td>-->
-<!--                        <td><span th:text="${price.status ? 'Đã nộp' : 'Chưa nộp'}"></span></td>-->
-<!--                        <td><span th:text="${price.note}"></span></td>-->
-<!--                        <td><span th:text="${#dates.format(price.depositedAt, 'dd/MM/yyyy')}"></span></td>-->
-<!--                    </tr>-->
+                    <tr th:each="customer, state : ${customerList}">
+                        <td><span th:text="${state.index + 1}"></span></td>
+                        <td><span th:text="${customer.companyName}"></span></td>
+                        <td><span th:text="${customer.address}"></span></td>
+                        <td><span th:text="${customer.representName}"></span></td>
+                        <td><span th:text="${customer.totalPrice}"></span></td>
+                        <td>
+                            <button type="button" class="btn btn-search" data-toggle="modal" data-target="#editModal" onclick="fillData(this)"
+                                    th:data-id="${customer.id}"
+                                    th:data-companyName="${customer.companyName}"
+                                    th:data-address="${customer.address}"
+                                    th:data-representName="${customer.representName}"
+                                    th:data-totalPrice="${customer.totalPrice}"
+                            >Sửa
+                            </button>
+                        </td>
+                        <td><button type="button" class="btn btn-search" onclick="remove(this)" data-th-id="${customer.id}">Xóa</button></td>
+                    </tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
+    <!-- Modal -->
+    <div id="addModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Thêm khách hàng</h5>
+                </div>
+                <div class="modal-body">
+                    <form id="frmAdd" class="form-row">
+                        <div class="form-group">
+                            <label for="name">Tên công ty:</label>
+                            <input type="text" class="form-control" placeholder="Enter company name" id="name" name="name">
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Địa chỉ:</label>
+                            <input type="text" class="form-control" placeholder="Enter address" id="address" name="address">
+                        </div>
+                        <div class="form-group">
+                            <label for="represent_name">Người đại diện:</label>
+                            <input type="text" class="form-control" placeholder="Enter represent name" id="represent_name" name="represent_name">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-search" data-dismiss="modal" onclick="add()">Thêm</button>
+                    <button type="button" class="btn btn-search" data-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="editModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Sửa thông tin khách hàng</h5>
+                </div>
+                <div class="modal-body">
+                    <form id="frmEdit" class="form-row">
+                        <div class="form-group">
+                            <label for="name1">Tên công ty:</label>
+                            <input type="text" class="form-control" placeholder="Enter company name" id="name1" name="name" value="">
+                        </div>
+                        <div class="form-group">
+                            <label for="address1">Địa chỉ:</label>
+                            <input type="text" class="form-control" placeholder="Enter address" id="address1" name="address" value="">
+                        </div>
+                        <div class="form-group">
+                            <label for="represent_name1">Người đại diện:</label>
+                            <input type="text" class="form-control" placeholder="Enter represent name" id="represent_name1" name="represent_name" value="">
+                        </div>
+                        <div class="form-group">
+                            <label for="total_price">Tổng tiền đã mua:</label>
+                            <input type="text" class="form-control" id="total_price" name="total_price" value="" disabled>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button id="btnEdit" type="button" class="btn btn-search" data-dismiss="modal" onclick="edit(this)">Cập nhật</button>
+                    <button type="button" class="btn btn-search" data-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </div>
+
 </body>
 </html>
