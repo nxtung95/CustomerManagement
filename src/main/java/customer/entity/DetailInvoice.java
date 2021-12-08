@@ -1,20 +1,18 @@
-//package customer.entity;
-//
-//import lombok.AllArgsConstructor;
-//import lombok.Data;
-//import lombok.NoArgsConstructor;
-//
-//import javax.persistence.*;
-//import java.io.Serializable;
-//import java.math.BigDecimal;
-//
-//@Entity
-//@Table(name = "detail_invoice")
-//@Data
-//public class DetailInvoice {
-//	private Integer productId;
-//	private Integer invoiceId;
-//
-//	private int quantity;
-//	private BigDecimal price;
-//}
+package customer.entity;
+
+import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+
+@Data
+@Document(collection = "detail_invoice")
+public class DetailInvoice {
+	@Id
+	private String id;
+	private int quantity;
+	private Long price;
+
+	@Field("product_name")
+	private String productName;
+}

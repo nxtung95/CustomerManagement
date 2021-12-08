@@ -1,0 +1,42 @@
+[{
+  "_id": {
+    "$oid": "61af942f8d08bbf6ea315991"
+  },
+  "name": "Công ty A",
+  "address": "HN",
+  "represent_name": "Nguyễn Văn A",
+  "invoice_list": [
+    {
+      "_id": "61af942f8d08bbf6ea315992",
+      "invoice_no": "HD001",
+      "sale_date": "2021-12-08",
+      "detail_invoice_list": [
+        {
+          "_id": "61af942f8d08bbf6ea315993",
+          "product_name": "Hộp chống thẩm",
+          "price": 5000,
+          "quantity": 5
+        },
+        {
+          "_id": "61af942f8d08bbf6ea315994",
+          "product_name": "Tủ điện",
+          "price": 10000,
+          "quantity": 25
+        }
+      ]
+    },
+    {
+      "_id": "61af942f8d08bbf6ea315996",
+      "invoice_no": "HD002",
+      "sale_date": "2021-12-12",
+      "detail_invoice_list": [
+        {
+          "_id": "61af942f8d08bbf6ea315997",
+          "name": "Tủ điện công nghiệp",
+          "price": 5000,
+          "quantity": 35
+        }
+      ]
+    }
+  ]
+}]
